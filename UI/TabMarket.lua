@@ -797,6 +797,15 @@ local function BuildItemView(parent)
     v.dev = IndLine(-54, L["vs average"])
     v.vol = IndLine(-72, L["Daily volatility"])
     v.liq = IndLine(-90, L["Liquidity"])
+    -- TradeSkillMaster's values of the item (when on): on hover
+    v.ind:EnableMouse(true)
+    v.ind:SetScript("OnEnter", function(self)
+        if not (state.selected and FT.TSM.On()) then return end
+        GameTooltip:SetOwner(self, "ANCHOR_TOP")
+        GameTooltip:AddLine(L["Indicators"], 1, 1, 1)
+        if FT.TSM.AddTooltip(state.selected) then GameTooltip:Show() else GameTooltip:Hide() end
+    end)
+    v.ind:SetScript("OnLeave", function() GameTooltip:Hide() end)
 
     -- signal: what to do with it if you sell, if you buy
     local function SigRow(y, label)
@@ -961,8 +970,12 @@ function T.ShowItem(id, keepView)
     local liqNames = { high = L["high"], medium = L["medium"], low = L["low"], unknown = L["no data"] }
     local liqColors = { high = "up", medium = "accent", low = "down", unknown = "dim" }
     -- and how much really sells, when seen (FT.Sales)
+    -- (not seen yet: how much sells in the region, by TradeSkillMaster)
+    local tsmSold = not s.sales and s.tsm and s.tsm.soldPerDay
     v.liq:SetText(FT.C(liqColors[liq], liqNames[liq])
-        .. (s.sales and (FT.C("dim", "  ||  ") .. FT.C(s.slow and "down" or "text", FT.Sales.PerDayText(s.sales))) or ""))
+        .. (s.sales and (FT.C("dim", "  ||  ") .. FT.C(s.slow and "down" or "text", FT.Sales.PerDayText(s.sales))) or "")
+        .. (tsmSold and (FT.C("dim", "  ||  ") .. FT.C("text", string.format(L["TSM ~%s/day"],
+            tsmSold < 10 and string.format("%.1f", tsmSold) or FT.Num(math.floor(tsmSold + 0.5))))) or ""))
 
     -- signals
     local sell, sellStrength, sellReason = FT.An.SellSignal(s)

@@ -344,6 +344,7 @@ function FT.UpdateStatus()
     end
     parts[#parts + 1] = Source("Auctionator", FT.Atr.On())
     parts[#parts + 1] = Source("Mastercraft", FT.MC.Loaded())
+    if FT.TSM.Loaded() then parts[#parts + 1] = Source("TSM", FT.TSM.On()) end
     parts[#parts + 1] = string.format(L["Recipes: %d"], #FT.Craft.List())
     parts[#parts + 1] = string.format(L["Tracked: %d"], FT.S.trackAll and #(FT.Market.Rows() or {}) or FT.Hist.UniverseSize())
     local rows = FT.Market.Rows()

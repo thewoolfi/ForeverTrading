@@ -1130,3 +1130,25 @@ ru["Market: %s items, %s with prices on 3+ days of the last two weeks, %s can be
     "«Рынок»: %s предметов, из них с ценами за 3+ дня из последних двух недель: %s, могут попасть в лидеры роста и падения: %s"
 ru["(Auctionator is off: only the days ForeverTrading saw itself count)"] =
     "(Auctionator выключен: считаются только дни, которые ForeverTrading видел сам)"
+
+-- TradeSkillMaster
+ru["Reading TSM's prices"] = "Чтение цен TSM"
+ru["At each login (and /reload) the latest prices TSM's desktop app downloaded for your realm go into ForeverTrading's history - a whole auction house at a time, without scanning (your own newer scans stand). While an item's own history is short, TSM's market value stands in for its average, and the region's sales for its liquidity. Your faction's auction house only."] =
+    "При каждом входе (и /reload) последние цены, которые приложение TSM скачало для вашего реалма, попадают в историю ForeverTrading — весь аукцион разом, без сканирования (ваши более свежие сканы остаются). Пока у предмета мало своей истории, рыночная цена TSM заменяет среднюю, а продажи по региону — ликвидность. Только аукцион вашей фракции."
+ru["%s above TSM's market value"] = "%s выше рыночной цены TSM"
+ru["%s below TSM's market value"] = "%s ниже рыночной цены TSM"
+ru["%s below TSM's market value: wait"] = "%s ниже рыночной цены TSM — лучше подождать"
+ru["TSM: ~%s a day in the region"] = "TSM: ~%s в день по региону"
+ru[", %d%% of auctions sell"] = ", продаётся %d%% лотов"
+ru["TSM ~%s/day"] = "TSM ~%s/день"
+ru["Lowest buyout"] = "Минимальный выкуп"
+ru["Recent value"] = "Недавняя цена"
+ru["Market value (14 days)"] = "Рыночная цена (14 дн.)"
+ru["Historical price (60 days)"] = "Историческая цена (60 дн.)"
+ru["Region market value"] = "Рыночная цена региона"
+ru["Region historical price"] = "Историческая цена региона"
+ru["Region sale price"] = "Средняя цена продажи (регион)"
+ru["Region sold a day"] = "Продаётся в день (регион)"
+ru["Region sale rate"] = "Доля продаж (регион)"
+ru["TSM knows your faction's auction house only: here just the region's."] =
+    "TSM знает только аукцион вашей фракции: здесь — лишь данные региона."
