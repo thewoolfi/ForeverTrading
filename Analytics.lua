@@ -309,6 +309,12 @@ function An.Stats(itemID)
         s.sellersNow = s.sellersNow or ((book.sellers or 0) > 0 and book.sellers or nil)
     end
     s.fair, s.typicalQ, s.typicalN, s.typicalS = An.FairNow(itemID)
+    -- TradeSkillMaster (FT.TSM, when on): while our own history of the item is short (under 3 days), its 14-day market
+    -- value of your realm is the average; with no fair price of our own, its recent value is the fair price
+    local tsm = FT.TSM and FT.TSM.Values(itemID)
+    s.tsm = tsm
+    if tsm and tsm.market and (s.avgN or 0) < 3 then s.avg, s.avgN, s.avgTSM = tsm.market, avgDays, true end
+    if tsm and not s.fair and (tsm.recent or tsm.market) then s.fair, s.fairTSM = tsm.recent or tsm.market, true end
     -- the first day the market is watched (no day before today): the fair price of the hours seen is the average
     if not s.avg and s.fair and Watched(avgDays) <= 1 then s.avg, s.avgN, s.avgFair = s.fair, 0, true end
     s.dev = Change(s.price, s.avg)
@@ -417,6 +423,19 @@ end
 -- "unknown" while the item has less than 5 days of history (fewer while the market itself has been watched fewer
 -- days, at least 2): too early to tell. On the market's first day: "medium" when many auctions of it are up now.
 function An.Liquidity(s)
+    local own = An.OwnLiquidity(s)
+    if own ~= "unknown" then return own end
+    -- too early to tell from our own history: what sells in the region, by TradeSkillMaster
+    local tsm = s and s.tsm
+    if tsm and tsm.soldPerDay then
+        if tsm.soldPerDay >= 5 and (tsm.saleRate or 0) >= 0.2 then return "high" end
+        if tsm.soldPerDay >= 0.5 then return "medium" end
+        return "low"
+    end
+    return "unknown"
+end
+
+function An.OwnLiquidity(s)
     if not s or not s.days or not s.span then return "unknown" end
     local watched = Watched(14)
     if s.span >= math.max(2, math.min(5, watched)) then
@@ -446,10 +465,12 @@ end
 -- what the average is of, in the reasons: "the 14-day average" (as many days as the setting while there are 3 or
 -- more of them, otherwise as many as there are), or the price of the last hours
 local function AboveText(s, dev)
+    if s.avgTSM then return string.format(L["%s above TSM's market value"], FT.Pct(dev, true)) end
     if s.avgFair then return string.format(L["%s above its price of the last hours"], FT.Pct(dev, true)) end
     return string.format(L["%s above the %d-day average"], FT.Pct(dev, true), (s.avgN or 0) >= 3 and FT.S.avgDays or s.avgN)
 end
 local function BelowText(s, dev)
+    if s.avgTSM then return string.format(L["%s below TSM's market value"], FT.Pct(dev, true)) end
     if s.avgFair then return string.format(L["%s below its price of the last hours"], FT.Pct(dev, true)) end
     return string.format(L["%s below the %d-day average"], FT.Pct(dev, true), (s.avgN or 0) >= 3 and FT.S.avgDays or s.avgN)
 end
@@ -476,6 +497,9 @@ function An.SellSignal(s)
         return "SELL", strength, reason
     end
     if dev <= -th then
+        if s.avgTSM then
+            return "HOLD", 2, string.format(L["%s below TSM's market value: wait"], FT.Pct(dev, true))
+        end
         if s.avgFair then
             return "HOLD", 2, string.format(L["%s below its price of the last hours: wait"], FT.Pct(dev, true))
         end
@@ -509,6 +533,13 @@ end
 
 -- trend over a week
 function An.Trend(s)
+    -- no week of our own yet: TradeSkillMaster's recent value against its 14-day market value
+    if s and not s.ch7 and s.tsm and s.tsm.recent and s.tsm.market then
+        local ch = s.tsm.recent / s.tsm.market - 1
+        if ch >= 0.05 then return "up" end
+        if ch <= -0.05 then return "down" end
+        return "flat"
+    end
     if not s or not s.ch7 then return "flat" end
     if s.ch7 >= 0.05 then return "up" end
     if s.ch7 <= -0.05 then return "down" end

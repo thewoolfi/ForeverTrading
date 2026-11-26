@@ -1,13 +1,13 @@
 ## Interface: 16001
 ## Title: |cfff0b90bForever|r|cffeaecefTrading|r
-## Notes: Exchange-style market analytics for WoW Forever with its own auction house scanner: price charts, order books, craft profit and sell/buy signals. Also reads Auctionator's and Mastercraft's data.
-## Notes-ruRU: Биржевая аналитика рынка для WoW Forever со своим сканером аукциона: графики цен, стаканы, прибыль крафта и сигналы продажи/закупки. Также использует данные Auctionator и Mastercraft.
+## Notes: Exchange-style market analytics for WoW Forever with its own auction house scanner: price charts, order books, craft profit and sell/buy signals. Also reads Auctionator's, Mastercraft's and TradeSkillMaster's data.
+## Notes-ruRU: Биржевая аналитика рынка для WoW Forever со своим сканером аукциона: графики цен, стаканы, прибыль крафта и сигналы продажи/закупки. Также использует данные Auctionator, Mastercraft и TradeSkillMaster.
 ## Version: @project-version@
 ## X-Website: https://github.com/thewoolfi/ForeverTrading
 ## X-Donate: https://boosty.to/andrewwoolfi
 ## X-Curse-Project-ID: 1810072
 ## SavedVariables: ForeverTradingDB
-## OptionalDeps: Auctionator, Mastercraft
+## OptionalDeps: Auctionator, Mastercraft, TradeSkillMaster
 ## IconTexture: Interface\Icons\INV_Misc_Coin_02
 ## Category: Auction/Economy
 ## X-Category: Auction/Economy
@@ -20,6 +20,7 @@ Data\Vendor.lua
 Sources\Scanner.lua
 Sources\Auctionator.lua
 Sources\Mastercraft.lua
+Sources\TSM.lua
 Sources\Game.lua
 History.lua
 Analytics.lua

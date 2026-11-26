@@ -178,13 +178,19 @@ function T.Build(p)
         L["Auctions read per item, cheapest first (50 a page). More pages: a deeper order book, a slower scan."])
 
     -- sources
-    local so = Section(left, L["Sources"], 2)
+    local so = Section(left, L["Sources"], 3)
     Check(so, "useAuctionator", "Auctionator",
         L["Its full scans and searches go into ForeverTrading's history, and the days you haven't scanned yourself come from its price database."],
         function() FT.Fire("FT_SOURCES_CHANGED") end)
     Check(so, "useMastercraft", "Mastercraft",
         L["Its price scans go into ForeverTrading's history; the recipes and holdings of alts you haven't logged in with ForeverTrading come from it."],
         function() FT.Fire("FT_SOURCES_CHANGED"); FT.Fire("FT_RECIPES_CHANGED"); FT.Fire("FT_INVENTORY_CHANGED") end)
+    Check(so, "useTSM", "TradeSkillMaster",
+        L["At each login (and /reload) the latest prices TSM's desktop app downloaded for your realm go into ForeverTrading's history - a whole auction house at a time, without scanning (your own newer scans stand). While an item's own history is short, TSM's market value stands in for its average, and the region's sales for its liquidity. Your faction's auction house only."],
+        function(on)
+            FT.Fire("FT_SOURCES_CHANGED")
+            if on then FT.TSM.Import() end
+        end)
 
     -- prices
     local pr = Section(left, L["Prices"], 2)
@@ -381,7 +387,8 @@ function T.Refresh()
     local lines = {
         "ForeverTrading  ||  " .. string.format(L["version %s"], FT.C("text", FT.VERSION_TEXT)),
         "Auctionator: " .. (FT.Atr.Loaded() and FT.C("up", L["connected"]) or FT.C("down", L["not loaded"])) ..
-            "    Mastercraft: " .. (FT.MC.Loaded() and FT.C("up", L["connected"]) or FT.C("down", L["not loaded"])),
+            "    Mastercraft: " .. (FT.MC.Loaded() and FT.C("up", L["connected"]) or FT.C("down", L["not loaded"])) ..
+            "    TSM: " .. (FT.TSM.Loaded() and FT.C("up", L["connected"]) or FT.C("down", L["not loaded"])),
         L["Prices come from ForeverTrading's own scans (and Auctionator's and Mastercraft's when they are on); recipes from your profession windows and Mastercraft."],
         "/ft  ||  /ft scan  ||  /ft scan mine  ||  /ft stop  ||  /ft reset",
     }

@@ -91,9 +91,12 @@ end
 -- how much really sells, as estimated from the listings seen go (FT.Sales): "Sells ~4.2 a day (14 h watched)"
 function UI.SalesText(s)
     local r = s and s.sales
-    if not r then return L["Sells"] .. " " .. FT.C("dim", L["not seen yet"]) end
+    -- and what sells in the region, by TradeSkillMaster (when on)
+    local tsm = s and FT.TSM.SalesText(s.tsm)
+    tsm = tsm and (FT.C("dim", "   ||   ") .. FT.C("text", tsm)) or ""
+    if not r then return L["Sells"] .. " " .. FT.C("dim", L["not seen yet"]) .. tsm end
     return L["Sells"] .. " " .. FT.C(s.slow and "down" or "text", FT.Sales.PerDayText(r))
-        .. FT.C("dim", " " .. string.format(L["(%d h watched)"], math.max(1, math.floor(r.hours + 0.5))))
+        .. FT.C("dim", " " .. string.format(L["(%d h watched)"], math.max(1, math.floor(r.hours + 0.5)))) .. tsm
 end
 
 -- listed / auctions / sellers of the newest measurement, and how many more (+, red: competition) or fewer

@@ -4,8 +4,10 @@
 
 An exchange-style trading terminal for the **WoW Forever** auction house, with its own scanner: price and profit
 charts, order books, craft profitability and "sell / craft / buy" signals. It also reads **Auctionator** and
-**Mastercraft** when they are installed (each source can be turned off in Settings) - neither is required: it goes by
-its own scans, and the signals and deals work from the first days of scanning.
+**Mastercraft** when they are installed, and **TradeSkillMaster** (each source can be turned off in Settings) - none is
+required: it goes by its own scans, and the signals and deals work from the first days of scanning. With TSM, the latest
+prices its desktop app downloaded for your realm go into the history at each login (a whole auction house, without
+scanning), and the region's real sales help judge liquidity.
 
 - **Market** - every item seen on the auction house: price, 24h change, 7-day sparkline, filters, a price line
   and a profitability line (zero in the middle) per item, RSI and other indicators, price alerts, and the
@@ -45,7 +47,7 @@ English (Settings > Language).
 
 ## Русский
 
-Биржевой терминал для аукциона **WoW Forever** со **своим сканером**: графики цены и прибыльности, стаканы, прибыльность крафта и сигналы «продавать / крафтить / закупать». В связке с **Auctionator** и **Mastercraft** — их данные тоже попадают в историю (каждый источник отключается в настройках), но ни один из них не обязателен: аддон опирается на свои сканы, а они лишь дополняют недостающее.
+Биржевой терминал для аукциона **WoW Forever** со **своим сканером**: графики цены и прибыльности, стаканы, прибыльность крафта и сигналы «продавать / крафтить / закупать». В связке с **Auctionator**, **Mastercraft** и **TradeSkillMaster** — их данные тоже попадают в историю (каждый источник отключается в настройках), но ни один из них не обязателен: аддон опирается на свои сканы, а они лишь дополняют недостающее.
 
 ## Откуда данные
 
@@ -59,6 +61,7 @@ English (Settings > Language).
 | **Два аукциона** | У аукциона вашей фракции и у Черноводья (нейтрального, общего для обеих фракций) свои цены, история, сделки и ваши лоты. Аукционист сам выбирает свой аукцион; чип в шапке переключает, чьи цены вы смотрите. «Сделки > Между аукционами» — что на одном дешевле, чем продаётся на другом; правый клик по сделке — в **список закупки**, и на другом аукционе вкладка «Продажа» покажет, что вы привезли и почём купили. |
 | **Auctionator** | Его полный скан и поиски пишутся в нашу историю; дни, которые вы сами не сканировали, берутся из его базы. |
 | **Mastercraft** | Его сканы цен пишутся в историю; рецепты и запасы альтов, на которых вы ещё не заходили с ForeverTrading. |
+| **TradeSkillMaster** | При каждом входе в игру (и `/reload`) последняя загрузка приложения TSM для вашего реалма (минимальный выкуп и число лотов каждого предмета, весь аукцион) пишется в историю — без сканирования; ваши более свежие сканы не перебиваются. Пока у предмета мало своей истории, рыночная цена TSM (14 дней) заменяет среднюю, недавняя — справедливую цену, а реальные продажи по региону (сколько продаётся в день, доля проданных лотов) — ликвидность. Значения TSM — во всплывающей подсказке карточки «Индикаторы». Только аукцион фракции, не Черноводье. |
 | **Игра** | Окна профессий (рецепты), сумки, банк, почта, золото каждого персонажа, цены у торговцев. |
 
 ## Первые шаги

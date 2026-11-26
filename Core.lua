@@ -122,6 +122,7 @@ FT.DEFAULTS = {
     theme = "dark",         -- dark / light / classic (after a reload)
     useAuctionator = true,  -- its scans and searches go into our history; days we don't have come from it
     useMastercraft = true,  -- recipes and holdings of alts ForeverTrading hasn't seen yet
+    useTSM = true,          -- TradeSkillMaster's downloads go into our history; its values fill in what we lack
     liveRefresh = true,     -- the item you have open is searched again every few seconds at the auction house
     shareAuto = true,       -- prices older than an hour: ask guild and group for fresher ones
     shareSend = true,       -- give our fresh scan to guild and group members who ask
@@ -295,7 +296,7 @@ local C_SUFFIX = FT.COIN.copper
 
 -- where a price came from, for people
 function FT.SourceName(source)
-    local names = { full = L["full scan"], mine = L["My items"], auctionator = "Auctionator", mastercraft = "Mastercraft",
+    local names = { full = L["full scan"], mine = L["My items"], auctionator = "Auctionator", mastercraft = "Mastercraft", tsm = "TSM",
         history = L["history"], live = L["live search"], peer = L["exchange"] }
     return names[source] or L["scan"]
 end
@@ -681,6 +682,7 @@ local PERF_JOBS = {
     { "scan:list", "Reading a scan of Auctionator" },
     { "scan:save", "Saving a scan" },
     { "scan:gone", "Marking what is no longer listed" },
+    { "tsm:import", "Reading TSM's prices" },
     { "market", "Market: every item" },
     { "market+", "Market: the changed items" },
     { "deals", "Deals: every item" },

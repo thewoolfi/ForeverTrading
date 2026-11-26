@@ -459,6 +459,15 @@ function H.Latest(itemID)
     return latest[itemID]
 end
 
+-- when the item's price was last seen by any source (this session, or today's candle after a reload; nil: not today)
+function H.LastSeen(itemID)
+    local l = latest[itemID]
+    local tr = Today(itemID)
+    local t = tr and (tr.m * 60 + EPOCH) or nil
+    if l and l.t and (not t or l.t > t) then t = l.t end
+    return t
+end
+
 -- The measurement before the newest one, at least half an hour older: { t, p, q, n, sl } (nil: none known).
 -- An item that matters to you has every measurement (the last scan, or the live update of half an hour ago);
 -- any other one the one before the newest of this session.
@@ -915,6 +924,11 @@ function FT.Price(itemID)
             local t = lastDay and math.min(time(), FT.DayStart(lastDay) + 43200) or nil
             return e.m, t, "auctionator", e.a and lastDay and e.a[tostring(lastDay)]
         end
+    end
+    -- never seen by our scans: TSM's lowest buyout of your realm (its last download)
+    if FT.TSM and FT.TSM.On() then
+        local p, t = FT.TSM.Price(itemID)
+        if p then return p, t, "tsm" end
     end
     return nil
 end
